@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
+import React, { useState } from "react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 
 interface WakeCardProps {
@@ -14,7 +21,6 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute }) => {
   const handleWokeUp = () => {
     onWokeUp();
     onOpenChange();
-    
   };
 
   const handleMute = () => {
@@ -26,17 +32,19 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute }) => {
     <>
       <div className="wake-card">
         <Button onPress={onOpen}>Open Modal</Button>
-        <Modal placement='center'
-        backdrop='blur'
-       isDismissable={false}
-       isKeyboardDismissDisabled={true}
-       hideCloseButton={true}
-
-        isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+          backdrop="blur"
+          hideCloseButton={true}
+          isDismissable={false}
+          isKeyboardDismissDisabled={true}
+          isOpen={isOpen}
+          placement="center"
+          onOpenChange={onOpenChange}
+        >
           <ModalContent>
-            {(onClose) => (
+            {() => (
               <>
-              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                <ModalHeader className="flex flex-col gap-1" />
                 <ModalBody className="flex flex-col items-center justify-center text-center">
                   <span className="text-6xl">😠</span>
                   <h2 className="text-2xl font-bold mt-2">😤Wake Up !!!</h2>
@@ -45,7 +53,9 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute }) => {
                   <Button color="primary" onPress={handleWokeUp}>
                     Woke up 😳
                   </Button>
-                  <Button onPress={handleMute}>{isMuted ? 'Unmute' : 'Mute'}</Button>
+                  <Button onPress={handleMute}>
+                    {isMuted ? "Unmute" : "Mute"}
+                  </Button>
                 </ModalFooter>
               </>
             )}

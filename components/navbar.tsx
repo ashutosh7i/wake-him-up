@@ -4,6 +4,7 @@ import {
   NavbarBrand,
 } from "@nextui-org/navbar";
 import NextLink from "next/link";
+
 import { ThemeSwitch } from "@/components/theme-switch";
 
 export const Navbar = () => {

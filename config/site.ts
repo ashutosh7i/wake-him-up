@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Wake Him Up",
-  description: "A PWA for couples to wake each other up with a single button using WebRTC.",
+  description:
+    "A PWA for couples to wake each other up with a single button using WebRTC.",
   navItems: [
     {
       label: "Home",

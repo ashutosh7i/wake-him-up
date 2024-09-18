@@ -118,11 +118,24 @@
 // }
 
 import React, { useState, useEffect } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import { Settings } from "lucide-react";
-import { getPairStatus, initiatePairing, confirmPairing, breakupPairing } from "@/config/appwrite";
+
+import {
+  getPairStatus,
+  initiatePairing,
+  confirmPairing,
+  breakupPairing,
+} from "@/config/appwrite";
 
 interface SettingsModalProps {
   onStatusChange: () => void;
@@ -130,7 +143,9 @@ interface SettingsModalProps {
 
 export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [pairStatus, setPairStatus] = useState<"unpaired" | "waiting" | "paired" | "error">("unpaired");
+  const [pairStatus, setPairStatus] = useState<
+    "unpaired" | "waiting" | "paired" | "error"
+  >("unpaired");
   const [partnerEmail, setPartnerEmail] = useState("");
   const [inputEmail, setInputEmail] = useState("");
 
@@ -142,6 +157,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   const fetchPairStatus = async () => {
     const status = await getPairStatus();
+
     setPairStatus(status.status as "unpaired" | "waiting" | "paired" | "error");
     if (status.partnerEmail) {
       setPartnerEmail(status.partnerEmail);
@@ -150,6 +166,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   const handleAddPartner = async () => {
     const result = await initiatePairing(inputEmail);
+
     if (result.success) {
       setPairStatus("waiting");
       setPartnerEmail(inputEmail);
@@ -161,6 +178,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   const handleConfirmPairing = async () => {
     const result = await confirmPairing(partnerEmail);
+
     if (result.success) {
       setPairStatus("paired");
       onStatusChange();
@@ -171,6 +189,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   const handleBreakup = async () => {
     const result = await breakupPairing();
+
     if (result.success) {
       setPairStatus("unpaired");
       setPartnerEmail("");
@@ -182,10 +201,10 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Button isIconOnly onPress={onOpen} color="default" aria-label="Settings">
+      <Button isIconOnly aria-label="Settings" color="default" onPress={onOpen}>
         <Settings />
       </Button>
-      <div onClick={onOpen}></div>
+      {/* <div onClick={onOpen} /> */}
       <Modal
         isDismissable={false}
         isKeyboardDismissDisabled={true}
@@ -194,17 +213,22 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
         onOpenChange={onOpenChange}
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Partner Settings</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Partner Settings
+              </ModalHeader>
               <ModalBody>
                 {pairStatus === "unpaired" && (
                   <>
-                    <p>Enter your partner's email to start pairing:</p>
+                    <p>
+                      &apos; Enter your partner&apos;s email to start
+                      pairing:&apos;
+                    </p>
                     <Input
+                      placeholder="Partner's email"
                       value={inputEmail}
                       onChange={(e) => setInputEmail(e.target.value)}
-                      placeholder="Partner's email"
                     />
                     <Button color="primary" onPress={handleAddPartner}>
                       Add Partner
@@ -213,7 +237,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
                 )}
                 {pairStatus === "waiting" && (
                   <>
-                    <p>Waiting for {partnerEmail} to confirm the pairing.</p>
+                    <p>`Waiting for ${partnerEmail} to confirm the pairing.`</p>
                     <Button color="primary" onPress={handleConfirmPairing}>
                       Confirm Pairing
                     </Button>
@@ -231,8 +255,7 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
                   <p>An error occurred. Please try again later.</p>
                 )}
               </ModalBody>
-              <ModalFooter>
-              </ModalFooter>
+              <ModalFooter />
             </>
           )}
         </ModalContent>

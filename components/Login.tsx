@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Plus } from "@nextui-org/shared-icons";
 import { OAuthProvider } from "appwrite";
+import { useRouter } from "next/navigation";
+
 import { account } from "@/config/appwrite";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
 
 const HomePage = () => {
   const router = useRouter();
@@ -52,7 +53,7 @@ const HomePage = () => {
                   OAuthProvider.Google,
                   `http://${hostname}/`, // Success URL
                   `http://${hostname}/`, // Failure URL
-                  ["profile", "email"] // Scopes
+                  ["profile", "email"], // Scopes
                 );
               }}
             >

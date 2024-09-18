@@ -1,9 +1,8 @@
-import React from 'react';
-import { Button } from "@nextui-org/button";
-import { MessageSquareHeart, Settings } from "lucide-react";
-import ChatModal from './ChatMode';
-import SettingsModal from './SettingsModal';
-import { Peer, DataConnection } from 'peerjs';
+import React from "react";
+import { Peer, DataConnection } from "peerjs";
+
+import ChatModal from "./ChatMode";
+import SettingsModal from "./SettingsModal";
 
 interface ControlButtonsProps {
   peer: Peer | null;
@@ -11,11 +10,15 @@ interface ControlButtonsProps {
   onStatusChange: () => void;
 }
 
-const ControlButtons: React.FC<ControlButtonsProps> = ({ peer, conn, onStatusChange }) => {
+const ControlButtons: React.FC<ControlButtonsProps> = ({
+  peer,
+  conn,
+  onStatusChange,
+}) => {
   return (
     <div className="flex justify-center space-x-4">
-      <ChatModal peer={peer} conn={conn} />
-      <SettingsModal onStatusChange={onStatusChange}/>
+      <ChatModal conn={conn} peer={peer} />
+      <SettingsModal onStatusChange={onStatusChange} />
     </div>
   );
 };

@@ -40,21 +40,20 @@
 //   );
 // }
 
+import { useState, useCallback } from "react";
 
-import { useState, useCallback } from 'react';
 import DefaultLayout from "@/layouts/default";
 import WakeButton from "@/components/WakeButton";
 import ConnectionStatusManager from "@/components/ConnectionStatusManager";
 import WakeCard from "@/components/WakeCard";
 import PeerConnection from "@/components/PeerConnection";
-import Account from "@/components/Account";
 
 export default function IndexPage() {
   const [statusKey, setStatusKey] = useState(0);
-  const [peerStatus, setPeerStatus] = useState('disconnected');
+  const [peerStatus, setPeerStatus] = useState("disconnected");
 
   const handleStatusChange = useCallback(() => {
-    setStatusKey(prev => prev + 1);
+    setStatusKey((prev) => prev + 1);
   }, []);
 
   const handlePeerStatusChange = useCallback((status: string) => {
@@ -70,14 +69,14 @@ export default function IndexPage() {
           <ConnectionStatusManager key={statusKey} peerStatus={peerStatus} />
         </main>
         <footer className="p-4">
-          <PeerConnection 
-            onConnectionStatusChange={handlePeerStatusChange} 
+          <PeerConnection
+            onConnectionStatusChange={handlePeerStatusChange}
             onStatusChange={handleStatusChange}
           />
         </footer>
       </div>
       {/* <Account /> */}
-      <WakeCard onWokeUp={() => {}} onMute={() => {}} />
+      <WakeCard onMute={() => {}} onWokeUp={() => {}} />
     </DefaultLayout>
   );
 }
