@@ -10,7 +10,8 @@ const PeerConnection = () => {
   const [conn, setConn] = useState(null);
 
   useEffect(() => {
-    const newPeer = new Peer();
+    // const newPeer = new Peer();
+    const newPeer = new Peer({host:'peerjs-server.herokuapp.com', secure:true, port:443})
 
     newPeer.on('open', (id) => {
       console.log('My peer ID is:', id);
