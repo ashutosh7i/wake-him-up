@@ -69,18 +69,18 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Peer } from 'peerjs';
+import Peer, { DataConnection } from 'peerjs';
 import { updateConnectionId, getPartnerPeerId } from '@/config/appwrite';
 import ControlButtons from './ControlButtons';
 
 interface PeerConnectionProps {
-    onConnectionStatusChange: (status: string) => void;
-    onStatusChange: () => void;
-  }
-  
-  const PeerConnection: React.FC<PeerConnectionProps> = ({ onConnectionStatusChange, onStatusChange }) => {
+  onConnectionStatusChange: (status: string) => void;
+  onStatusChange: () => void;
+}
+
+const PeerConnection: React.FC<PeerConnectionProps> = ({ onConnectionStatusChange, onStatusChange }) => {
   const [peer, setPeer] = useState<Peer | null>(null);
-  const [conn, setConn] = useState<Peer.DataConnection | null>(null);
+  const [conn, setConn] = useState<DataConnection | null>(null);
 
   useEffect(() => {
     const newPeer = new Peer();
@@ -116,7 +116,7 @@ interface PeerConnectionProps {
     setupConnection(newConn);
   };
 
-  const setupConnection = (connection: Peer.DataConnection) => {
+  const setupConnection = (connection: DataConnection) => {
     connection.on('open', () => {
       console.log('Connected to:', connection.peer);
       onConnectionStatusChange('connected');

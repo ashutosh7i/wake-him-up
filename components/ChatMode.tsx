@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 import { MessageSquareHeart, Phone, Video } from "lucide-react";
-import { Peer } from 'peerjs';
+import { Peer, DataConnection } from 'peerjs';
 
 interface ChatModalProps {
   peer: Peer | null;
-  conn: Peer.DataConnection | null;
+  conn: DataConnection | null;
 }
 
 export default function ChatModal({ peer, conn }: ChatModalProps) {
@@ -27,7 +27,8 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
-      const newMessages = [...messages, { text: messageInput, sender: 'me' }];
+      const newMessage: { text: string; sender: "me" | "them" } = { text: messageInput, sender: 'me' };
+      const newMessages = [...messages, newMessage];
       setMessages(newMessages);
       setMessageInput("");
       if (typeof window !== "undefined") {

@@ -3,8 +3,10 @@ import { Plus } from "@nextui-org/shared-icons";
 import { OAuthProvider } from "appwrite";
 import { account } from "@/config/appwrite";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
+  const router = useRouter();
   const { user, loading } = useAuth();
   const [hostname, setHostname] = useState("");
 

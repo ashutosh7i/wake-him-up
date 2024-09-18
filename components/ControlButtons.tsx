@@ -3,10 +3,11 @@ import { Button } from "@nextui-org/button";
 import { MessageSquareHeart, Settings } from "lucide-react";
 import ChatModal from './ChatMode';
 import SettingsModal from './SettingsModal';
+import { Peer, DataConnection } from 'peerjs';
 
 interface ControlButtonsProps {
   peer: Peer | null;
-  conn: Peer.DataConnection | null;
+  conn: DataConnection | null;
   onStatusChange: () => void;
 }
 

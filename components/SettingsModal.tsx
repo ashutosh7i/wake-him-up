@@ -126,7 +126,6 @@ import { getPairStatus, initiatePairing, confirmPairing, breakupPairing } from "
 
 interface SettingsModalProps {
   onStatusChange: () => void;
-  children: React.ReactNode;
 }
 
 export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
