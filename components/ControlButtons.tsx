@@ -1,15 +1,22 @@
+import React from 'react';
 import { Button } from "@nextui-org/button";
-import { User, AnchorIcon } from "@nextui-org/shared-icons";
+import { MessageSquareHeart, Settings } from "lucide-react";
+import ChatModal from './ChatMode';
+import SettingsModal from './SettingsModal';
 
-export default function ControlButtons() {
+interface ControlButtonsProps {
+  peer: Peer | null;
+  conn: Peer.DataConnection | null;
+  onStatusChange: () => void;
+}
+
+const ControlButtons: React.FC<ControlButtonsProps> = ({ peer, conn, onStatusChange }) => {
   return (
-    <div className="flex justify-between items-center">
-      <Button isIconOnly variant="light" aria-label="Settings" className="bg-gray-200 p-4">
-        <AnchorIcon className="text-gray-600" />
-      </Button>
-      <Button isIconOnly variant="light" aria-label="Profile" className="bg-gray-200 p-4">
-        <User className="text-gray-600" />
-      </Button>
+    <div className="flex justify-center space-x-4">
+      <ChatModal peer={peer} conn={conn} />
+      <SettingsModal onStatusChange={onStatusChange}/>
     </div>
   );
-}
+};
+
+export default ControlButtons;

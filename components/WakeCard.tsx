@@ -30,19 +30,18 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute }) => {
         backdrop='blur'
        isDismissable={false}
        isKeyboardDismissDisabled={true}
+       hideCloseButton={true}
 
         isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">Wake Up!</ModalHeader>
-                <ModalBody>
-                  <p>Are you ready to wake up?</p>
+              <ModalHeader className="flex flex-col gap-1"></ModalHeader>
+                <ModalBody className="flex flex-col items-center justify-center text-center">
+                  <span className="text-6xl">😠</span>
+                  <h2 className="text-2xl font-bold mt-2">😤Wake Up !!!</h2>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
                   <Button color="primary" onPress={handleWokeUp}>
                     Woke up 😳
                   </Button>

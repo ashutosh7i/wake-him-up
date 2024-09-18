@@ -32,7 +32,7 @@ export default function ConnectionStatus({ message, msgtype }: ConnectionStatusP
   }
 
   return (
-    <Card className={`mt-8 bg-gray-800 ${textColor} border-1 ${borderColor} w-60 h-10 flex items-center justify-center rounded-lg`}>
+    <Card className={`mt-8 bg-gray-800 ${textColor} border-1 ${borderColor} w-auto h-10 flex items-center justify-center rounded-lg`}>
       <CardBody className="py-2 px-4 text-center">
         <span className={`text-md font-semibold`}>{message}</span>
       </CardBody>
