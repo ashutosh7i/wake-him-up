@@ -377,8 +377,12 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
         </div>
       )}
 
-      <audio ref={localAudioRef} autoPlay muted />
-      <audio ref={remoteAudioRef} autoPlay />
+      <audio ref={localAudioRef} autoPlay muted>
+        <track kind="captions" />
+      </audio>
+      <audio ref={remoteAudioRef} autoPlay>
+        <track kind="captions" />
+      </audio>
     </div>
   );
 }
