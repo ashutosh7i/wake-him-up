@@ -9,7 +9,14 @@ import {
   useDisclosure,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { MessageSquareHeart, Phone, Video, PhoneOff, Mic, MicOff } from "lucide-react";
+import {
+  MessageSquareHeart,
+  Phone,
+  Video,
+  PhoneOff,
+  Mic,
+  MicOff,
+} from "lucide-react";
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 
 interface ChatModalProps {
@@ -25,7 +32,9 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   >([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isInCall, setIsInCall] = useState(false);
-  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(null);
+  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(
+    null,
+  );
   const [isMuted, setIsMuted] = useState(false);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -36,6 +45,7 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedMessages = localStorage.getItem("chatMessages");
+
       if (savedMessages) {
         setMessages(JSON.parse(savedMessages));
       }
@@ -92,9 +102,12 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
         endCall();
       } else {
         const newMessage = { text: data, sender: "them" as const };
+
         setMessages((prevMessages) => {
           const updatedMessages = [...prevMessages, newMessage];
+
           localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
+
           return updatedMessages;
         });
       }
@@ -104,9 +117,12 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const handleSendMessage = () => {
     if (messageInput.trim() && conn) {
       const newMessage = { text: messageInput, sender: "me" as const };
+
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages, newMessage];
+
         localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
+
         return updatedMessages;
       });
       conn.send(messageInput);
@@ -123,13 +139,16 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const startCall = async () => {
     if (peer && conn) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         const call = peer.call(conn.peer, stream);
+
         setIsInCall(true);
         activeCallRef.current = call;
         handleCallStream(call, stream);
       } catch (err) {
-        console.error('Failed to get local stream', err);
+        // console.error("Failed to get local stream", err);
       }
     }
   };
@@ -141,30 +160,36 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const answerCall = async () => {
     if (incomingCall) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+
         incomingCall.answer(stream);
         setIsInCall(true);
         activeCallRef.current = incomingCall;
         handleCallStream(incomingCall, stream);
       } catch (err) {
-        console.error('Failed to get local stream', err);
+        //  console.error("Failed to get local stream", err);
       }
     }
     setIncomingCall(null);
   };
 
-  const handleCallStream = (call: MediaConnection, localStream: MediaStream) => {
+  const handleCallStream = (
+    call: MediaConnection,
+    localStream: MediaStream,
+  ) => {
     if (localAudioRef.current) {
       localAudioRef.current.srcObject = localStream;
     }
 
-    call.on('stream', (remoteStream) => {
+    call.on("stream", (remoteStream) => {
       if (remoteAudioRef.current) {
         remoteAudioRef.current.srcObject = remoteStream;
       }
     });
 
-    call.on('close', () => {
+    call.on("close", () => {
       endCall();
     });
   };
@@ -176,7 +201,8 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
     }
     if (localAudioRef.current) {
       const stream = localAudioRef.current.srcObject as MediaStream;
-      stream?.getTracks().forEach(track => track.stop());
+
+      stream?.getTracks().forEach((track) => track.stop());
       localAudioRef.current.srcObject = null;
     }
     if (remoteAudioRef.current) {
@@ -190,7 +216,10 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
 
   const toggleMute = () => {
     if (localAudioRef.current && localAudioRef.current.srcObject) {
-      const audioTrack = (localAudioRef.current.srcObject as MediaStream).getAudioTracks()[0];
+      const audioTrack = (
+        localAudioRef.current.srcObject as MediaStream
+      ).getAudioTracks()[0];
+
       audioTrack.enabled = !audioTrack.enabled;
       setIsMuted(!audioTrack.enabled);
     }
@@ -199,7 +228,8 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   return (
@@ -301,9 +331,9 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
       </Modal>
 
       <Modal
+        className="z-50"
         isOpen={incomingCall !== null}
         onClose={() => setIncomingCall(null)}
-        className="z-50"
       >
         <ModalContent>
           <ModalHeader>Incoming Call</ModalHeader>
@@ -311,8 +341,12 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
             <p>You have an incoming voice call.</p>
           </ModalBody>
           <ModalFooter>
-            <Button color="success" onPress={answerCall}>Answer</Button>
-            <Button color="danger" onPress={() => setIncomingCall(null)}>Decline</Button>
+            <Button color="success" onPress={answerCall}>
+              Answer
+            </Button>
+            <Button color="danger" onPress={() => setIncomingCall(null)}>
+              Decline
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -343,7 +377,7 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
         </div>
       )}
 
-      <audio ref={localAudioRef} muted autoPlay />
+      <audio ref={localAudioRef} autoPlay muted />
       <audio ref={remoteAudioRef} autoPlay />
     </div>
   );

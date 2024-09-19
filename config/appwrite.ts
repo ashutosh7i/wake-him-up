@@ -40,7 +40,7 @@ export const database = new Databases(client);
 //         const userData = await account.get();
 //         const email = userData.email;
 
-//         //console.log("User email:", email);
+//         ////console.log("User email:", email);
 
 //         // Query the database to find the user's document ID based on their email
 //         const userDocumentIdResponse = await database.listDocuments(
@@ -58,12 +58,12 @@ export const database = new Databases(client);
 //                 ID.unique(),
 //                 { Email: email, ConnectionId: newConnectionId }
 //             );
-//             //console.log("New user document created with ID:", newUserDocument.$id);
+//             ////console.log("New user document created with ID:", newUserDocument.$id);
 //             return; // Exit the function after creating the new document
 //         }
 
 //         const userDocumentId = userDocumentIdResponse.documents[0].$id;
-//         //console.log("User document ID:", userDocumentId);
+//         ////console.log("User document ID:", userDocumentId);
 
 //         // Update the connection ID in the user's document
 //         await database.updateDocument(
@@ -306,7 +306,7 @@ export const breakupPairing = async () => {
 
 export const getPartnerPeerId = async () => {
   try {
-    //console.log("Getting partner peer ID");
+    ////console.log("Getting partner peer ID");
     const pairStatus = await getPairStatus();
 
     if (pairStatus.status === "paired") {

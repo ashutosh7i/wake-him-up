@@ -31,7 +31,3 @@ export default function WakeButton({ onWakeUp, isConnected }: WakeButtonProps) {
     </Button>
   );
 }
-
-// logic-
-
-const handleWake = () => {};

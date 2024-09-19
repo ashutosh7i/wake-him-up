@@ -1,16 +1,15 @@
 import { useRouter } from "next/router";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { logout } from "@/config/appwrite";
 
 const Account = () => {
-  const { user, loading, checkAuth } = useAuth();
+  const { user, loading, logout, checkAuth } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
     await logout();
-    checkAuth(); // Update auth context after logout
-    router.push("/login"); // Redirect to home page
+    await checkAuth(); // Update auth context after logout
+    router.push("/login"); // Redirect to login page
   };
 
   if (loading) {
