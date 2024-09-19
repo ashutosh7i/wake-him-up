@@ -101,10 +101,24 @@ export default function ConnectionStatusManager({
           if (peerStatus === "connected") {
             setConnectionState("connected");
             setMessage(`Connected to ${pairStatus.partnerEmail}`);
-          } else {
-            setConnectionState("paired");
-            setMessage(`Paired with ${pairStatus.partnerEmail}, connecting...`);
+          } 
+          else if (peerStatus === "disconnected") {
+            setConnectionState("disconnected");
+            setMessage(`Connecting to ${pairStatus.partnerEmail}`);
           }
+          else if (peerStatus === "Waking up partner...") {
+            setConnectionState("pairing");
+            setMessage(`Waking up ${pairStatus.partnerEmail}`);
+          }
+          else if (peerStatus === "Partner woke up") {
+            setConnectionState("connected");
+            setMessage(`Partner woke up`);
+          }
+          else {
+            setConnectionState("paired");
+            setMessage(`Connecting to ${pairStatus.partnerEmail}`);
+          }
+
           break;
         default:
           setConnectionState("error");
@@ -138,6 +152,7 @@ function getMessageType(
     case "error":
       return "error";
     case "initializing":
+      return "log";
     case "pairing":
       return "log";
     default:

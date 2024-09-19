@@ -24,17 +24,22 @@ interface ChatModalProps {
   conn: DataConnection | null;
 }
 
+// Define system message types
+const SYSTEM_MESSAGES = ["WAKE_UP", "WOKE_UP", "CALL_ENDED"];
+
+interface Message {
+  text: string;
+  sender: "me" | "them";
+  isSystem: boolean;
+}
+
 export default function ChatModal({ peer, conn }: ChatModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState<
-    { text: string; sender: "me" | "them" }[]
-  >([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isInCall, setIsInCall] = useState(false);
-  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(
-    null,
-  );
+  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(null);
   const [isMuted, setIsMuted] = useState(false);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -45,7 +50,6 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedMessages = localStorage.getItem("chatMessages");
-
       if (savedMessages) {
         setMessages(JSON.parse(savedMessages));
       }
@@ -98,31 +102,33 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
 
   const handleIncomingMessage = useCallback((data: any) => {
     if (typeof data === "string") {
+      const isSystemMessage = SYSTEM_MESSAGES.includes(data);
       if (data === "CALL_ENDED") {
         endCall();
-      } else {
-        const newMessage = { text: data, sender: "them" as const };
-
-        setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, newMessage];
-
-          localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-
-          return updatedMessages;
-        });
       }
+      const newMessage: Message = {
+        text: data,
+        sender: "them",
+        isSystem: isSystemMessage,
+      };
+      setMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages, newMessage];
+        localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
+        return updatedMessages;
+      });
     }
   }, []);
 
   const handleSendMessage = () => {
     if (messageInput.trim() && conn) {
-      const newMessage = { text: messageInput, sender: "me" as const };
-
+      const newMessage: Message = {
+        text: messageInput,
+        sender: "me",
+        isSystem: false,
+      };
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages, newMessage];
-
         localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-
         return updatedMessages;
       });
       conn.send(messageInput);
@@ -139,16 +145,13 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const startCall = async () => {
     if (peer && conn) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const call = peer.call(conn.peer, stream);
-
         setIsInCall(true);
         activeCallRef.current = call;
         handleCallStream(call, stream);
       } catch (err) {
-        // console.error("Failed to get local stream", err);
+        console.error("Failed to get local stream", err);
       }
     }
   };
@@ -160,25 +163,19 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const answerCall = async () => {
     if (incomingCall) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         incomingCall.answer(stream);
         setIsInCall(true);
         activeCallRef.current = incomingCall;
         handleCallStream(incomingCall, stream);
       } catch (err) {
-        //  console.error("Failed to get local stream", err);
+        console.error("Failed to get local stream", err);
       }
     }
     setIncomingCall(null);
   };
 
-  const handleCallStream = (
-    call: MediaConnection,
-    localStream: MediaStream,
-  ) => {
+  const handleCallStream = (call: MediaConnection, localStream: MediaStream) => {
     if (localAudioRef.current) {
       localAudioRef.current.srcObject = localStream;
     }
@@ -201,7 +198,6 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
     }
     if (localAudioRef.current) {
       const stream = localAudioRef.current.srcObject as MediaStream;
-
       stream?.getTracks().forEach((track) => track.stop());
       localAudioRef.current.srcObject = null;
     }
@@ -216,10 +212,7 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
 
   const toggleMute = () => {
     if (localAudioRef.current && localAudioRef.current.srcObject) {
-      const audioTrack = (
-        localAudioRef.current.srcObject as MediaStream
-      ).getAudioTracks()[0];
-
+      const audioTrack = (localAudioRef.current.srcObject as MediaStream).getAudioTracks()[0];
       audioTrack.enabled = !audioTrack.enabled;
       setIsMuted(!audioTrack.enabled);
     }
@@ -228,7 +221,6 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
@@ -282,7 +274,7 @@ export default function ChatModal({ peer, conn }: ChatModalProps) {
               </ModalHeader>
               <ModalBody className="flex flex-col p-0">
                 <div className="flex-grow overflow-y-auto p-4 max-h-[calc(100vh-200px)]">
-                  {messages.map((msg, index) => (
+                  {messages.filter(msg => !msg.isSystem).map((msg, index) => (
                     <div
                       key={index}
                       className={`flex items-center ${
