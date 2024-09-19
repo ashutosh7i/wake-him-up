@@ -17,7 +17,7 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
 }) => {
   return (
     <div className="flex justify-center space-x-4">
-      <ChatModal conn={conn} peer={peer} />
+      <ChatModal conn={conn} peer={peer} onStatusChange={onStatusChange} />
       <SettingsModal onStatusChange={onStatusChange} />
     </div>
   );

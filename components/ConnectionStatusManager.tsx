@@ -1,67 +1,5 @@
-// import React, { useState, useEffect, useCallback } from 'react';
-// import ConnectionStatus from './ConnectionStatus';
-// import { getPairStatus } from '@/config/appwrite';
-
-// type ConnectionState = 'initializing' | 'unpaired' | 'pairing' | 'paired' | 'active' | 'idle' | 'error';
-
-// export default function ConnectionStatusManager() {
-//   const [connectionState, setConnectionState] = useState<ConnectionState>('initializing');
-//   const [message, setMessage] = useState('Initializing...');
-
-//   const checkConnectionStatus = useCallback(async () => {
-//     try {
-//       const pairStatus = await getPairStatus();
-
-//       switch (pairStatus.status) {
-//         case 'unpaired':
-//           setConnectionState('unpaired');
-//           setMessage('Not paired with anyone');
-//           break;
-//         case 'waiting':
-//           setConnectionState('pairing');
-//           setMessage(`Waiting for ${pairStatus.partnerEmail} to confirm`);
-//           break;
-//         case 'paired':
-//           setConnectionState('paired');
-//           setMessage(`Paired with ${pairStatus.partnerEmail}`);
-//           break;
-//         default:
-//           setConnectionState('error');
-//           setMessage('Error checking pair status');
-//       }
-//     } catch (error) {
-//       //console.error('Error checking connection status:', error);
-//       setConnectionState('error');
-//       setMessage('Error checking connection status');
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     checkConnectionStatus();
-//   }, [checkConnectionStatus]);
-
-//   return <ConnectionStatus message={message} msgtype={getMessageType(connectionState)} />;
-// }
-
-// function getMessageType(state: ConnectionState): 'success' | 'error' | 'info' | 'log' {
-//   switch (state) {
-//     case 'paired':
-//     case 'active':
-//       return 'success';
-//     case 'error':
-//       return 'error';
-//     case 'initializing':
-//     case 'pairing':
-//       return 'log';
-//     default:
-//       return 'info';
-//   }
-// }
-
 import React, { useState, useEffect, useCallback } from "react";
-
 import ConnectionStatus from "./ConnectionStatus";
-
 import { getPairStatus } from "@/config/appwrite";
 
 type ConnectionState =
@@ -71,7 +9,11 @@ type ConnectionState =
   | "paired"
   | "connected"
   | "disconnected"
-  | "error";
+  | "error"
+  | "incomingCall"
+  | "calling"
+  | "inCall"
+  | "newMessage";
 
 interface ConnectionStatusManagerProps {
   peerStatus: string;
@@ -114,18 +56,33 @@ export default function ConnectionStatusManager({
             setConnectionState("connected");
             setMessage(`Partner woke up`);
           }
+          else if (peerStatus === "Incoming call") {
+            setConnectionState("incomingCall");
+            setMessage(`Incoming call from ${pairStatus.partnerEmail}`);
+          }
+          else if (peerStatus === "Calling...") {
+            setConnectionState("calling");
+            setMessage(`Calling ${pairStatus.partnerEmail}`);
+          }
+          else if (peerStatus === "In call") {
+            setConnectionState("inCall");
+            setMessage(`In call with ${pairStatus.partnerEmail}`);
+          }
+          else if (peerStatus === "New message") {
+            setConnectionState("newMessage");
+            setMessage(`New message from ${pairStatus.partnerEmail}`);
+          }
           else {
             setConnectionState("paired");
             setMessage(`Connecting to ${pairStatus.partnerEmail}`);
           }
-
           break;
         default:
           setConnectionState("error");
           setMessage("Error checking pair status");
       }
     } catch (error) {
-      //console.error("Error checking connection status:", error);
+      console.error("Error checking connection status:", error);
       setConnectionState("error");
       setMessage("Error checking connection status");
     }
@@ -148,12 +105,16 @@ function getMessageType(
 ): "success" | "error" | "info" | "log" {
   switch (state) {
     case "connected":
+    case "inCall":
       return "success";
     case "error":
       return "error";
     case "initializing":
-      return "log";
     case "pairing":
+    case "calling":
+    case "incomingCall":
+      return "log";
+    case "newMessage":
       return "log";
     default:
       return "info";
