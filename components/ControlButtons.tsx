@@ -8,17 +8,19 @@ interface ControlButtonsProps {
   peer: Peer | null;
   conn: DataConnection | null;
   onStatusChange: () => void;
+  buttonClassName?: string;
 }
 
 const ControlButtons: React.FC<ControlButtonsProps> = ({
   peer,
   conn,
   onStatusChange,
+  buttonClassName = "",
 }) => {
   return (
-    <div className="flex justify-center space-x-4">
-      <ChatModal conn={conn} peer={peer} onStatusChange={onStatusChange} />
-      <SettingsModal onStatusChange={onStatusChange} />
+    <div className="flex justify-center space-x-16">
+      <ChatModal conn={conn} peer={peer} onStatusChange={onStatusChange} buttonClassName={buttonClassName} />
+      <SettingsModal onStatusChange={onStatusChange} buttonClassName={buttonClassName} />
     </div>
   );
 };

@@ -139,9 +139,10 @@ import {
 
 interface SettingsModalProps {
   onStatusChange: () => void;
+  buttonClassName?: string;
 }
 
-export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
+export default function SettingsModal({ onStatusChange, buttonClassName = "" }: SettingsModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [pairStatus, setPairStatus] = useState<
     "unpaired" | "waiting" | "paired" | "error"
@@ -201,10 +202,9 @@ export default function SettingsModal({ onStatusChange }: SettingsModalProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Button isIconOnly aria-label="Settings" color="default" onPress={onOpen}>
+      <Button isIconOnly aria-label="Settings" color="default" onPress={onOpen} className={buttonClassName}>
         <Settings />
       </Button>
-      {/* <div onClick={onOpen} /> */}
       <Modal
         isDismissable={false}
         isKeyboardDismissDisabled={true}

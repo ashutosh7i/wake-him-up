@@ -25,16 +25,12 @@ export default function IndexPage() {
   }, []);
 
   const handlePeerStatusChange = useCallback((status: string) => {
-    //console.log("Peer status changed:", status);
     setPeerStatus(status);
   }, []);
 
   const handleWakeUp = useCallback(() => {
-    //console.log("Wake Up button clicked in IndexPage");
     if (peerConnectionRef.current) {
       peerConnectionRef.current.handleWakeUp();
-    } else {
-      //console.log("PeerConnection ref is not available");
     }
   }, []);
 
@@ -44,22 +40,23 @@ export default function IndexPage() {
 
   return (
     <DefaultLayout>
-      <div className="flex flex-col h-screen">
-        <main className="flex-grow flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col h-full justify-between py-8">
+        <div className="flex-grow flex flex-col items-center justify-start pt-16 pb-5">
           <WakeButton
             isConnected={peerStatus === "connected"}
             onWakeUp={handleWakeUp}
           />
-          <div className="my-7" />
+        </div>
+        <div className="flex-grow flex items-center justify-center">
           <ConnectionStatusManager key={statusKey} peerStatus={peerStatus} />
-        </main>
-        <footer className="p-4">
+        </div>
+        <div className="flex-shrink-0 pt-16">
           <PeerConnection
             ref={peerConnectionRef}
             onConnectionStatusChange={handlePeerStatusChange}
             onStatusChange={handleStatusChange}
           />
-        </footer>
+        </div>
       </div>
     </DefaultLayout>
   );

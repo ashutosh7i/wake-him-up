@@ -24,6 +24,7 @@ interface ChatModalProps {
   peer: Peer | null;
   conn: DataConnection | null;
   onStatusChange: (status: string) => void;
+  buttonClassName?: string;
 }
 
 const SYSTEM_MESSAGES = ["WAKE_UP", "WOKE_UP", "CALL_ENDED", "CALL_DECLINED","WAKE_UP_REJECTED","WAKE_UP_CONFIRMED"];
@@ -34,7 +35,7 @@ interface Message {
   isSystem: boolean;
 }
 
-export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps) {
+export default function ChatModal({ peer, conn, onStatusChange, buttonClassName = "" }: ChatModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -146,7 +147,7 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
           localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
           return updatedMessages;
         });
-        if (!isOpen) {
+        if (!isOpen && !isSystemMessage) {
           setUnreadMessages((prev) => prev + 1);
           updateStatus("New message");
           if (messageAudioRef.current) {
@@ -340,6 +341,7 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
               ringtoneRef.current.currentTime = 0;
             }
           }}
+          className={buttonClassName}
         >
           <MessageSquareHeart />
         </Button>
@@ -461,7 +463,7 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
             <Button color="success" onPress={answerCall}>
               Answer
             </Button>
-          </ModalFooter>
+          </ModalFooter> 
         </ModalContent>
       </Modal>
 

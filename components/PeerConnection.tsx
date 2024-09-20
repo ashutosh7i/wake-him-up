@@ -198,12 +198,13 @@ import React, {
   interface PeerConnectionProps {
     onConnectionStatusChange: (status: string) => void;
     onStatusChange: () => void;
+    onCloseChatModal?: () => void;
   }
   
   const PeerConnection = forwardRef<
     { handleWakeUp: () => void },
     PeerConnectionProps
-  >(({ onConnectionStatusChange, onStatusChange }, ref) => {
+  >(({ onConnectionStatusChange, onStatusChange, onCloseChatModal }, ref) => {
     const [peer, setPeer] = useState<Peer | null>(null);
     const [conn, setConn] = useState<DataConnection | null>(null);
     const [showWakeCard, setShowWakeCard] = useState(false);
@@ -215,6 +216,9 @@ import React, {
         if (conn) {
           conn.send("WAKE_UP");
           onConnectionStatusChange("Waking up partner...");
+          if (onCloseChatModal) {
+            onCloseChatModal();
+          }
         }
       },
     }));
@@ -269,6 +273,9 @@ import React, {
           if (data === "WAKE_UP") {
             setShowWakeCard(true);
             playSound();
+            if (onCloseChatModal) {
+              onCloseChatModal();
+            }
           } else if (data === "WOKE_UP") {
             setWakeUpConfirmation(true);
             onOpen();
@@ -283,7 +290,7 @@ import React, {
             onConnectionStatusChange("Wake up rejected, trying again");
           }
         },
-        [onOpen, onConnectionStatusChange]
+        [onOpen, onConnectionStatusChange, onCloseChatModal]
       );
     
       const handleWokeUp = useCallback(() => {
@@ -321,7 +328,14 @@ import React, {
     
       return (
         <>
-          <ControlButtons conn={conn} peer={peer} onStatusChange={onStatusChange} />
+          <div className="flex justify-center space-x-4">
+            <ControlButtons 
+              conn={conn} 
+              peer={peer} 
+              onStatusChange={onStatusChange}
+              buttonClassName="w-16 h-16 text-xl" // Increase button size
+            />
+          </div>
           <WakeCard
             isOpen={showWakeCard}
             onClose={() => {
