@@ -52,6 +52,7 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
   const [isTyping, setIsTyping] = useState(false);
   const [unreadMessages, setUnreadMessages] = useState(0);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const messageAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const updateStatus = useCallback((status: string) => {
     if (onStatusChange && typeof onStatusChange === 'function') {
@@ -67,6 +68,7 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
       }
       ringtoneRef.current = new Audio("/ringtone.mp3");
       ringtoneRef.current.loop = true;
+      messageAudioRef.current = new Audio("/message.mp3");
     }
 
     if (conn) {
@@ -147,6 +149,9 @@ export default function ChatModal({ peer, conn, onStatusChange }: ChatModalProps
         if (!isOpen) {
           setUnreadMessages((prev) => prev + 1);
           updateStatus("New message");
+          if (messageAudioRef.current) {
+            messageAudioRef.current.play().catch(e => console.error("Error playing message sound:", e));
+          }
         }
       }
     }
