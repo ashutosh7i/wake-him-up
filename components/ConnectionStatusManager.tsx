@@ -29,6 +29,8 @@ export default function ConnectionStatusManager({
   const checkConnectionStatus = useCallback(async () => {
     try {
       const pairStatus = await getPairStatus();
+      console.log("Pair status:", pairStatus.status);
+      console.log("Peer status:", peerStatus);
 
       switch (pairStatus.status) {
         case "unpaired":
@@ -55,6 +57,10 @@ export default function ConnectionStatusManager({
           else if (peerStatus === "Partner woke up") {
             setConnectionState("connected");
             setMessage(`Partner woke up`);
+          }
+          else if (peerStatus === "Wake up confirmed") {
+            setConnectionState("connected");
+            setMessage(`Wake up confirmed`);
           }
           else if (peerStatus === "Incoming call") {
             setConnectionState("incomingCall");

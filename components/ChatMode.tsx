@@ -26,7 +26,7 @@ interface ChatModalProps {
   onStatusChange: (status: string) => void;
 }
 
-const SYSTEM_MESSAGES = ["WAKE_UP", "WOKE_UP", "CALL_ENDED", "CALL_DECLINED"];
+const SYSTEM_MESSAGES = ["WAKE_UP", "WOKE_UP", "CALL_ENDED", "CALL_DECLINED","WAKE_UP_REJECTED","WAKE_UP_CONFIRMED"];
 
 interface Message {
   text: string;
