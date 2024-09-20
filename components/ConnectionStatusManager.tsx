@@ -29,8 +29,6 @@ export default function ConnectionStatusManager({
   const checkConnectionStatus = useCallback(async () => {
     try {
       const pairStatus = await getPairStatus();
-      console.log("Pair status:", pairStatus.status);
-      console.log("Peer status:", peerStatus);
 
       switch (pairStatus.status) {
         case "unpaired":

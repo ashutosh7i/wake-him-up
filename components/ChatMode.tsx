@@ -377,7 +377,10 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
                     aria-label="RTC video call"
                     color="primary"
                     variant="light"
-                    onPress={onClose}
+                    onPress={() => {
+                      onOpen();
+                      alert("Ruko Zara sabar karo😂");
+                    }}
                   >
                     <Video />
                   </Button>

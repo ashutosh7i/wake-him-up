@@ -27,10 +27,10 @@ const LoginPage = () => {
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Welcome to Wake Him Up
+          Welcome to Wake Him Up😴
         </h1>
         <p className="text-center text-gray-600 mb-8">
-          Sign in to connect with your partner
+          Sign in to continue
         </p>
         <Button
           className="w-full py-2 px-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold border border-gray-400 rounded shadow flex items-center justify-center"
