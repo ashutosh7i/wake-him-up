@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import ConnectionStatus from "./ConnectionStatus";
+
 import { getPairStatus } from "@/config/appwrite";
 
 type ConnectionState =
@@ -43,40 +45,31 @@ export default function ConnectionStatusManager({
           if (peerStatus === "connected") {
             setConnectionState("connected");
             setMessage(`Connected to ${pairStatus.partnerEmail}`);
-          } 
-          else if (peerStatus === "disconnected") {
+          } else if (peerStatus === "disconnected") {
             setConnectionState("disconnected");
             setMessage(`Connecting to ${pairStatus.partnerEmail}`);
-          }
-          else if (peerStatus === "Waking up partner...") {
+          } else if (peerStatus === "Waking up partner...") {
             setConnectionState("pairing");
             setMessage(`Waking up ${pairStatus.partnerEmail}`);
-          }
-          else if (peerStatus === "Partner woke up") {
+          } else if (peerStatus === "Partner woke up") {
             setConnectionState("connected");
             setMessage(`Partner woke up`);
-          }
-          else if (peerStatus === "Wake up confirmed") {
+          } else if (peerStatus === "Wake up confirmed") {
             setConnectionState("connected");
             setMessage(`Wake up confirmed`);
-          }
-          else if (peerStatus === "Incoming call") {
+          } else if (peerStatus === "Incoming call") {
             setConnectionState("incomingCall");
             setMessage(`Incoming call from ${pairStatus.partnerEmail}`);
-          }
-          else if (peerStatus === "Calling...") {
+          } else if (peerStatus === "Calling...") {
             setConnectionState("calling");
             setMessage(`Calling ${pairStatus.partnerEmail}`);
-          }
-          else if (peerStatus === "In call") {
+          } else if (peerStatus === "In call") {
             setConnectionState("inCall");
             setMessage(`In call with ${pairStatus.partnerEmail}`);
-          }
-          else if (peerStatus === "New message") {
+          } else if (peerStatus === "New message") {
             setConnectionState("newMessage");
             setMessage(`New message from ${pairStatus.partnerEmail}`);
-          }
-          else {
+          } else {
             setConnectionState("paired");
             setMessage(`Connecting to ${pairStatus.partnerEmail}`);
           }
@@ -86,7 +79,7 @@ export default function ConnectionStatusManager({
           setMessage("Error checking pair status");
       }
     } catch (error) {
-      console.error("Error checking connection status:", error);
+      alert(`Error checking connection status: ${error}`);
       setConnectionState("error");
       setMessage("Error checking connection status");
     }

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "@nextui-org/link";
 
 const Footer = () => {
   return (

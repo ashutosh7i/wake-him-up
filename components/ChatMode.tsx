@@ -6,9 +6,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure
+  useDisclosure,
 } from "@nextui-org/modal";
-import {Badge} from "@nextui-org/badge";
+import { Badge } from "@nextui-org/badge";
 import { Button } from "@nextui-org/button";
 import {
   MessageSquareHeart,
@@ -27,7 +27,14 @@ interface ChatModalProps {
   buttonClassName?: string;
 }
 
-const SYSTEM_MESSAGES = ["WAKE_UP", "WOKE_UP", "CALL_ENDED", "CALL_DECLINED","WAKE_UP_REJECTED","WAKE_UP_CONFIRMED"];
+const SYSTEM_MESSAGES = [
+  "WAKE_UP",
+  "WOKE_UP",
+  "CALL_ENDED",
+  "CALL_DECLINED",
+  "WAKE_UP_REJECTED",
+  "WAKE_UP_CONFIRMED",
+];
 
 interface Message {
   text: string;
@@ -35,13 +42,20 @@ interface Message {
   isSystem: boolean;
 }
 
-export default function ChatModal({ peer, conn, onStatusChange, buttonClassName = "" }: ChatModalProps) {
+export default function ChatModal({
+  peer,
+  conn,
+  onStatusChange,
+  buttonClassName = "",
+}: ChatModalProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isInCall, setIsInCall] = useState(false);
-  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(null);
+  const [incomingCall, setIncomingCall] = useState<MediaConnection | null>(
+    null,
+  );
   const [isMuted, setIsMuted] = useState(false);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
@@ -55,15 +69,19 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const messageAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const updateStatus = useCallback((status: string) => {
-    if (onStatusChange && typeof onStatusChange === 'function') {
-      onStatusChange(status);
-    }
-  }, [onStatusChange]);
+  const updateStatus = useCallback(
+    (status: string) => {
+      if (onStatusChange && typeof onStatusChange === "function") {
+        onStatusChange(status);
+      }
+    },
+    [onStatusChange],
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedMessages = localStorage.getItem("chatMessages");
+
       if (savedMessages) {
         setMessages(JSON.parse(savedMessages));
       }
@@ -123,40 +141,52 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleIncomingMessage = useCallback((data: any) => {
-    if (typeof data === "string") {
-      const isSystemMessage = SYSTEM_MESSAGES.includes(data);
-      if (data === "CALL_ENDED") {
-        endCall();
-      } else if (data === "CALL_DECLINED") {
-        setCallStatus("Call declined");
-        updateStatus("Connected");
-        setTimeout(() => setCallStatus(null), 3000);
-      } else if (data === "TYPING_START") {
-        setIsTyping(true);
-      } else if (data === "TYPING_END") {
-        setIsTyping(false);
-      } else {
-        const newMessage: Message = {
-          text: data,
-          sender: "them",
-          isSystem: isSystemMessage,
-        };
-        setMessages((prevMessages) => {
-          const updatedMessages = [...prevMessages, newMessage];
-          localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
-          return updatedMessages;
-        });
-        if (!isOpen && !isSystemMessage) {
-          setUnreadMessages((prev) => prev + 1);
-          updateStatus("New message");
-          if (messageAudioRef.current) {
-            messageAudioRef.current.play().catch(e => console.error("Error playing message sound:", e));
+  const handleIncomingMessage = useCallback(
+    (data: any) => {
+      if (typeof data === "string") {
+        const isSystemMessage = SYSTEM_MESSAGES.includes(data);
+
+        if (data === "CALL_ENDED") {
+          endCall();
+        } else if (data === "CALL_DECLINED") {
+          setCallStatus("Call declined");
+          updateStatus("Connected");
+          setTimeout(() => setCallStatus(null), 3000);
+        } else if (data === "TYPING_START") {
+          setIsTyping(true);
+        } else if (data === "TYPING_END") {
+          setIsTyping(false);
+        } else {
+          const newMessage: Message = {
+            text: data,
+            sender: "them",
+            isSystem: isSystemMessage,
+          };
+
+          setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages, newMessage];
+
+            localStorage.setItem(
+              "chatMessages",
+              JSON.stringify(updatedMessages),
+            );
+
+            return updatedMessages;
+          });
+          if (!isOpen && !isSystemMessage) {
+            setUnreadMessages((prev) => prev + 1);
+            updateStatus("New message");
+            if (messageAudioRef.current) {
+              messageAudioRef.current
+                .play()
+                .catch((e) => alert(`Error playing message sound: ${e}`));
+            }
           }
         }
       }
-    }
-  }, [isOpen, updateStatus]);
+    },
+    [isOpen, updateStatus],
+  );
 
   const handleSendMessage = () => {
     if (messageInput.trim() && conn) {
@@ -165,9 +195,12 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
         sender: "me",
         isSystem: false,
       };
+
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages, newMessage];
+
         localStorage.setItem("chatMessages", JSON.stringify(updatedMessages));
+
         return updatedMessages;
       });
       conn.send(messageInput);
@@ -198,8 +231,11 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
   const startCall = async () => {
     if (peer && conn) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         const call = peer.call(conn.peer, stream);
+
         setCallStatus("Calling...");
         updateStatus("Calling...");
         activeCallRef.current = call;
@@ -213,7 +249,7 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
           }
         }, 30000); // 30 seconds timeout
       } catch (err) {
-        console.error("Failed to get local stream", err);
+        alert(`Failed to get local stream: ${err}`);
         setCallStatus(null);
         updateStatus("Connected");
       }
@@ -224,21 +260,26 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
     setIncomingCall(call);
     updateStatus("Incoming call");
     if (ringtoneRef.current) {
-      ringtoneRef.current.play().catch(e => console.error("Error playing ringtone:", e));
+      ringtoneRef.current
+        .play()
+        .catch((e) => alert(`Error playing ringtone: ${e}`));
     }
   };
 
   const answerCall = async () => {
     if (incomingCall) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+
         incomingCall.answer(stream);
         setIsInCall(true);
         setCallStatus("In call");
         activeCallRef.current = incomingCall;
         handleCallStream(incomingCall, stream);
       } catch (err) {
-        console.error("Failed to get local stream", err);
+        alert(`Failed to get local stream: ${err}`);
       }
     }
     setIncomingCall(null);
@@ -265,7 +306,10 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
     setTimeout(() => setCallStatus(null), 3000);
   };
 
-  const handleCallStream = (call: MediaConnection, localStream: MediaStream) => {
+  const handleCallStream = (
+    call: MediaConnection,
+    localStream: MediaStream,
+  ) => {
     if (localAudioRef.current) {
       localAudioRef.current.srcObject = localStream;
     }
@@ -293,6 +337,7 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
     }
     if (localAudioRef.current) {
       const stream = localAudioRef.current.srcObject as MediaStream;
+
       stream?.getTracks().forEach((track) => track.stop());
       localAudioRef.current.srcObject = null;
     }
@@ -307,7 +352,10 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
 
   const toggleMute = () => {
     if (localAudioRef.current && localAudioRef.current.srcObject) {
-      const audioTrack = (localAudioRef.current.srcObject as MediaStream).getAudioTracks()[0];
+      const audioTrack = (
+        localAudioRef.current.srcObject as MediaStream
+      ).getAudioTracks()[0];
+
       audioTrack.enabled = !audioTrack.enabled;
       setIsMuted(!audioTrack.enabled);
     }
@@ -316,6 +364,7 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
+
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
@@ -327,21 +376,27 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
 
   return (
     <div className="flex flex-col gap-2">
-      <Badge content={unreadMessages} color="danger" isInvisible={unreadMessages === 0}>
+      <Badge
+        color="danger"
+        content={unreadMessages}
+        isInvisible={unreadMessages === 0}
+      >
         <Button
           isIconOnly
           aria-label="Chat"
+          className={buttonClassName}
           color="danger"
           disabled={!conn}
           onClick={() => {
             onOpen();
             if (ringtoneRef.current) {
-              ringtoneRef.current.play().catch(e => console.error("Error playing ringtone:", e));
+              ringtoneRef.current
+                .play()
+                .catch((e) => alert(`Error playing ringtone: ${e}`));
               ringtoneRef.current.pause();
               ringtoneRef.current.currentTime = 0;
             }
           }}
-          className={buttonClassName}
         >
           <MessageSquareHeart />
         </Button>
@@ -388,27 +443,31 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
               </ModalHeader>
               <ModalBody className="flex flex-col p-0">
                 {callStatus && (
-                  <div className="bg-gray-200 p-2 text-center">{callStatus}</div>
+                  <div className="bg-gray-200 p-2 text-center">
+                    {callStatus}
+                  </div>
                 )}
                 <div className="flex-grow overflow-y-auto p-4 max-h-[calc(100vh-200px)]">
-                  {messages.filter(msg => !msg.isSystem).map((msg, index) => (
-                    <div
-                      key={index}
-                      className={`flex items-center ${
-                        msg.sender === "me" ? "justify-end" : "justify-start"
-                      } mb-2`}
-                    >
+                  {messages
+                    .filter((msg) => !msg.isSystem)
+                    .map((msg, index) => (
                       <div
-                        className={`p-2 rounded-md ${
-                          msg.sender === "me"
-                            ? "bg-gray-200 text-black"
-                            : "bg-blue-200 text-black"
-                        } max-w-xs`}
+                        key={index}
+                        className={`flex items-center ${
+                          msg.sender === "me" ? "justify-end" : "justify-start"
+                        } mb-2`}
                       >
-                        {msg.text}
+                        <div
+                          className={`p-2 rounded-md ${
+                            msg.sender === "me"
+                              ? "bg-gray-200 text-black"
+                              : "bg-blue-200 text-black"
+                          } max-w-xs`}
+                        >
+                          {msg.text}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                   <div ref={messagesEndRef} />
                 </div>
                 {isTyping && (
@@ -445,14 +504,14 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
       </Modal>
 
       <Modal
-        className="z-50"
-        isOpen={incomingCall !== null}
-        onClose={declineCall}
         backdrop="blur"
-        placement="center"
+        className="z-50"
+        hideCloseButton={true}
         isDismissable={false}
         isKeyboardDismissDisabled={true}
-        hideCloseButton={true}
+        isOpen={incomingCall !== null}
+        placement="center"
+        onClose={declineCall}
       >
         <ModalContent>
           <ModalHeader>Incoming Call</ModalHeader>
@@ -466,7 +525,7 @@ export default function ChatModal({ peer, conn, onStatusChange, buttonClassName 
             <Button color="success" onPress={answerCall}>
               Answer
             </Button>
-          </ModalFooter> 
+          </ModalFooter>
         </ModalContent>
       </Modal>
 

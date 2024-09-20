@@ -19,8 +19,16 @@ const ControlButtons: React.FC<ControlButtonsProps> = ({
 }) => {
   return (
     <div className="flex justify-center space-x-16">
-      <ChatModal conn={conn} peer={peer} onStatusChange={onStatusChange} buttonClassName={buttonClassName} />
-      <SettingsModal onStatusChange={onStatusChange} buttonClassName={buttonClassName} />
+      <ChatModal
+        buttonClassName={buttonClassName}
+        conn={conn}
+        peer={peer}
+        onStatusChange={onStatusChange}
+      />
+      <SettingsModal
+        buttonClassName={buttonClassName}
+        onStatusChange={onStatusChange}
+      />
     </div>
   );
 };

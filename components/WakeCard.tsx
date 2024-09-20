@@ -75,7 +75,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
 } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
 
@@ -86,7 +85,12 @@ interface WakeCardProps {
   onClose: () => void;
 }
 
-const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute, isOpen, onClose }) => {
+const WakeCard: React.FC<WakeCardProps> = ({
+  onWokeUp,
+  onMute,
+  isOpen,
+  onClose,
+}) => {
   const [isMuted, setIsMuted] = useState(false);
   const [muteTimer, setMuteTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -106,16 +110,16 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute, isOpen, onClose }
   const handleMute = () => {
     setIsMuted(true);
     onMute();
-    
+
     if (muteTimer) {
       clearTimeout(muteTimer);
     }
-    
+
     const timer = setTimeout(() => {
       setIsMuted(false);
       onMute(); // Unmute after 15 seconds
     }, 15000);
-    
+
     setMuteTimer(timer);
   };
 
@@ -139,7 +143,7 @@ const WakeCard: React.FC<WakeCardProps> = ({ onWokeUp, onMute, isOpen, onClose }
           <Button color="primary" onPress={handleWokeUp}>
             Woke up 😳
           </Button>
-          <Button onPress={handleMute} disabled={isMuted}>
+          <Button disabled={isMuted} onPress={handleMute}>
             {isMuted ? "Muted (15s)" : "Mute (15s)"}
           </Button>
         </ModalFooter>

@@ -29,9 +29,7 @@ const LoginPage = () => {
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Welcome to Wake Him Up😴
         </h1>
-        <p className="text-center text-gray-600 mb-8">
-          Sign in to continue
-        </p>
+        <p className="text-center text-gray-600 mb-8">Sign in to continue</p>
         <Button
           className="w-full py-2 px-4 bg-white hover:bg-gray-100 text-gray-800 font-semibold border border-gray-400 rounded shadow flex items-center justify-center"
           onClick={login}
