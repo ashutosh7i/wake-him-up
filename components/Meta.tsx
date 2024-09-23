@@ -1,14 +1,14 @@
 export default function Meta() {
   return (
     <>
-      <title>Wake Him Up</title>
+      <title>Wake Them Up</title>
       <meta charSet="utf-8" />
       <meta content="Aashutosh Soni" name="author" />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       {/* KEYWORDS */}
-      <meta content="Wake Him Up - A Next.js App" name="title" />
+      <meta content="Wake Them Up - A Next.js App" name="title" />
       <meta
-        content="A web app designed to wake him up and interactive features!"
+        content="A web app designed to wake them up and interactive features!"
         name="description"
       />
       <meta
@@ -29,8 +29,8 @@ export default function Meta() {
       />
       <meta content="yes" name="mobile-web-app-capable" />
       <meta content="yes" name="apple-mobile-web-app-capable" />
-      <meta content="Wake Him Up" name="apple-mobile-web-app-title" />
-      <meta content="Wake Him Up" name="application-name" />
+      <meta content="Wake Them Up" name="apple-mobile-web-app-title" />
+      <meta content="Wake Them Up" name="application-name" />
       <meta
         content="black-translucent"
         name="apple-mobile-web-app-status-bar-style"
@@ -57,9 +57,9 @@ export default function Meta() {
       {/* OG TAGS */}
       <meta content="website" property="og:type" />
       <meta content="https://wake-him-up-app.vercel.app" property="og:url" />
-      <meta content="Wake Him Up - A Next.js App" property="og:title" />
+      <meta content="Wake Them Up - A Next.js App" property="og:title" />
       <meta
-        content="A web app designed to wake him up and interactive features!"
+        content="A web app designed to wake them up and interactive features!"
         property="og:description"
       />
       <meta
@@ -73,9 +73,9 @@ export default function Meta() {
         content="https://wake-him-up-app.vercel.app"
         property="twitter:url"
       />
-      <meta content="Wake Him Up - A Next.js App" property="twitter:title" />
+      <meta content="Wake Them Up - A Next.js App" property="twitter:title" />
       <meta
-        content="A web app designed to wake him up and interactive features!"
+        content="A web app designed to wake them up and interactive features!"
         property="twitter:description"
       />
       <meta

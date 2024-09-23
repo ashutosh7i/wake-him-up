@@ -24,7 +24,7 @@ export default function WakeButton({ onWakeUp, isConnected }: WakeButtonProps) {
       <div className="flex flex-col items-center text-white">
         <span className="text-4xl animate-bounce pt-2">😾</span>
         <span className="text-2xl">wake</span>
-        <span className="text-2xl">him</span>
+        <span className="text-2xl">them</span>
         <span className="text-2xl">up</span>
         <span className="text-4xl mt-2 animate-pulse">😴</span>
       </div>

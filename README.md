@@ -1,9 +1,9 @@
-# Wake Him Up
+# Wake Them Up
 
 ## 🌟 Introduction
 
 (Made for a friend😉)
-Wake Him Up is a progressive web application (PWA) designed for couples to wake each other up using a single button with WebRTC technology. This unique app allows partners to stay connected and ensure they're up when needed, even when apart.
+Wake Them Up is a progressive web application (PWA) designed for couples to wake each other up using a single button with WebRTC technology. This unique app allows partners to stay connected and ensure they're up when needed, even when apart.
 
 ## 🚀 Features
 
