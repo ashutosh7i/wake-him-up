@@ -46,6 +46,7 @@ export default function SettingsModal({
 
   const fetchCurrentUserEmail = async () => {
     const email = await getCurrentUserEmail();
+
     setCurrentUserEmail(email || ""); // Use an empty string if email is null
   };
 
@@ -82,9 +83,13 @@ export default function SettingsModal({
   };
 
   const handleBreakup = async () => {
-    const confirmBreakup = window.confirm("Do you confirm you want to break up?");
+    const confirmBreakup = window.confirm(
+      "Do you confirm you want to break up?",
+    );
+
     if (confirmBreakup) {
       const userInput = prompt("Please enter 'break up' to confirm:");
+
       if (userInput === "break up") {
         const result = await breakupPairing();
 
@@ -100,7 +105,7 @@ export default function SettingsModal({
       }
     }
   };
-  
+
   const handleLogout = async () => {
     await logout();
     onStatusChange();
@@ -134,17 +139,28 @@ export default function SettingsModal({
               <ModalBody>
                 <div className="flex justify-between items-center">
                   <p>Your email: {currentUserEmail}</p>
-                  <Button size="sm" color="danger" onPress={handleLogout}>
+                  <Button color="danger" size="sm" onPress={handleLogout}>
                     Logout
                   </Button>
                 </div>
                 {pairStatus === "unpaired" && (
                   <>
-                    <p className="text-blue-600 text-sm">1. Ask your partner to install &quot;Wake Them Up&quot;.</p>
-                    <p className="text-blue-600 text-sm">2. Ask them to sign up and share their email.</p>
-                    <p className="text-blue-600 text-sm">3. Paste their email below and click &quot;Add Partner&quot;.</p>
-                    <p className="text-blue-600 text-sm">4. Once sent, click &quot;Confirm Pairing&quot; again.</p>
-                    <p className="text-blue-600 text-sm">5. It will show &quot;paired&quot; once confirmed.</p>
+                    <p className="text-blue-600 text-sm">
+                      1. Ask your partner to install &quot;Wake Them Up&quot;.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      2. Ask them to sign up and share their email.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      3. Paste their email below and click &quot;Add
+                      Partner&quot;.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      4. Once sent, click &quot;Confirm Pairing&quot; again.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      5. It will show &quot;paired&quot; once confirmed.
+                    </p>
                     <Input
                       placeholder="Partner's email"
                       value={inputEmail}
@@ -157,9 +173,16 @@ export default function SettingsModal({
                 )}
                 {pairStatus === "waiting" && (
                   <>
-                  <p className="text-blue-600 text-sm">1. Click &quot;Confirm Pairing&quot;.</p>
-                  <p className="text-blue-600 text-sm">2. Ask your partner to click &quot;Confirm Pairing&quot;.</p>
-                  <p className="text-blue-600 text-sm">3. It will show &quot;paired&quot; once confirmed both ways.</p>
+                    <p className="text-blue-600 text-sm">
+                      1. Click &quot;Confirm Pairing&quot;.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      2. Ask your partner to click &quot;Confirm Pairing&quot;.
+                    </p>
+                    <p className="text-blue-600 text-sm">
+                      3. It will show &quot;paired&quot; once confirmed both
+                      ways.
+                    </p>
                     <p>Waiting for {partnerEmail} to confirm the pairing.</p>
                     <Button color="primary" onPress={handleConfirmPairing}>
                       Confirm Pairing
@@ -178,8 +201,7 @@ export default function SettingsModal({
                   <p>An error occurred. Please try again later.</p>
                 )}
               </ModalBody>
-              <ModalFooter>
-              </ModalFooter>
+              <ModalFooter />
             </>
           )}
         </ModalContent>

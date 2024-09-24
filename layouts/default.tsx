@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+
 import { Head } from "./head";
+
 import { Navbar } from "@/components/navbar";
 import Footer from "@/components/footer";
 import OnboardingCard from "@/components/OnboardingCard";
@@ -13,10 +15,11 @@ export default function DefaultLayout({
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
+
     if (!hasSeenOnboarding) {
       setShowOnboarding(true);
-      localStorage.setItem('hasSeenOnboarding', 'true');
+      localStorage.setItem("hasSeenOnboarding", "true");
     }
   }, []);
 

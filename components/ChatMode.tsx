@@ -413,7 +413,7 @@ export default function ChatModal({
         onOpenChange={onOpenChange}
       >
         <ModalContent>
-          {(onClose) => (
+          {(_onClose) => (
             <>
               <ModalHeader className="flex justify-between items-center">
                 <span>Chat Mode</span>

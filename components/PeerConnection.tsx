@@ -36,7 +36,7 @@ const PeerConnection = forwardRef<
   const [conn, setConn] = useState<DataConnection | null>(null);
   const [showWakeCard, setShowWakeCard] = useState(false);
   const [wakeUpConfirmation, setWakeUpConfirmation] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen, onClose } = useDisclosure();
 
   useImperativeHandle(ref, () => ({
     handleWakeUp: () => {

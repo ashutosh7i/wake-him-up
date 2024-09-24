@@ -81,6 +81,7 @@ export const database = new Databases(client);
 export const getCurrentUserEmail = async () => {
   try {
     const userData = await account.get();
+
     return userData.email;
   } catch (error) {
     //console.error("Failed to get current user email:", error);
