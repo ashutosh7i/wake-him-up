@@ -129,6 +129,7 @@ export const updateConnectionId = async (newConnectionId: string) => {
 export const logout = async () => {
   try {
     await account.deleteSession("current");
+    window.location.reload();
   } catch (error) {
     //console.error("Failed to logout:", error);
   }
