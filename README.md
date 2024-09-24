@@ -32,6 +32,7 @@ Wake Them Up is a progressive web application (PWA) designed for couples to wake
 The application follows a serverless architecture with Next.js as the core framework. It uses a combination of server-side rendering (SSR) and client-side rendering for optimal performance and SEO.
 
 Key components include:
+
 - `PeerConnection`: Manages WebRTC connections
 - `ChatMode`: Handles the chat interface and functionality
 - `WakeButton`: Central component for initiating wake-up calls
@@ -50,6 +51,7 @@ Key components include:
 ## 📱 PWA Support
 
 The app is configured as a Progressive Web App, allowing users to install it on their devices for a native-like experience. It includes:
+
 - Customized `manifest.json`
 - Service worker for offline functionality
 - Responsive design for various screen sizes
@@ -63,6 +65,7 @@ The app is configured as a Progressive Web App, allowing users to install it on 
 ## 🎨 UI/UX Design
 
 The interface is designed to be intuitive and user-friendly, with a focus on the primary "Wake Up" functionality. It features:
+
 - A large, central wake-up button
 - Clear status indicators
 - Easy access to chat and settings
@@ -77,6 +80,7 @@ The interface is designed to be intuitive and user-friendly, with a focus on the
 ## 🔄 State Management
 
 The application uses React's built-in state management with hooks, including:
+
 - `useState` for local component state
 - `useEffect` for side effects and lifecycle management
 - `useCallback` for memoized callbacks
@@ -85,6 +89,7 @@ The application uses React's built-in state management with hooks, including:
 ## 📡 API Integration
 
 The app integrates with Appwrite backend services for:
+
 - User authentication
 - Partner pairing
 - Storing user preferences and chat history

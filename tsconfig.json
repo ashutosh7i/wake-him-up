@@ -18,6 +18,11 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/PeerConnection.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "components/PeerConnection.tsx"
+  ],
   "exclude": ["node_modules"]
 }

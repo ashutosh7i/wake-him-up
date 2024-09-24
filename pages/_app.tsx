@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <NextUIProvider navigate={router.push}>
-      <NextThemesProvider>
+      <NextThemesProvider defaultTheme="light">
         <AuthProvider>
           <Component {...pageProps} />
           <Meta />
