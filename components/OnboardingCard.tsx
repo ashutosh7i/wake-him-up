@@ -30,31 +30,20 @@ const onboardingSteps: OnboardingStep[] = [
   },
 ];
 
-const OnboardingCard: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [showCard, setShowCard] = useState(false);
+interface OnboardingCardProps {
+  onClose: () => void;
+}
 
-  useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    if (!hasSeenOnboarding) {
-      setShowCard(true);
-      localStorage.setItem('hasSeenOnboarding', 'true');
-    }
-  }, []);
+const OnboardingCard: React.FC<OnboardingCardProps> = ({ onClose }) => {
+  const [currentStep, setCurrentStep] = useState(0);
 
   const handleNext = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      setShowCard(false);
+      onClose();
     }
   };
-
-  const handleClose = () => {
-    setShowCard(false);
-  };
-
-  if (!showCard) return null;
 
   return (
     <Card className="fixed bottom-16 left-4 w-80 z-50">
@@ -63,7 +52,7 @@ const OnboardingCard: React.FC = () => {
         <p>{onboardingSteps[currentStep].content}</p>
       </CardBody>
       <CardFooter className="justify-between">
-        <Button size="sm" variant="light" onClick={handleClose}>
+        <Button size="sm" variant="light" onClick={onClose}>
           Close
         </Button>
         <Button size="sm" color="primary" onClick={handleNext}>

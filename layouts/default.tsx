@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head } from "./head";
 import { Navbar } from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -12,8 +12,20 @@ export default function DefaultLayout({
 }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+      localStorage.setItem('hasSeenOnboarding', 'true');
+    }
+  }, []);
+
   const handleShowOnboarding = () => {
     setShowOnboarding(true);
+  };
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
   };
 
   return (
@@ -24,7 +36,7 @@ export default function DefaultLayout({
         {children}
       </main>
       <Footer />
-      {showOnboarding && <OnboardingCard />}
+      {showOnboarding && <OnboardingCard onClose={handleCloseOnboarding} />}
       <OnboardingButton onShowOnboarding={handleShowOnboarding} />
     </div>
   );
