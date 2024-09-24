@@ -82,16 +82,25 @@ export default function SettingsModal({
   };
 
   const handleBreakup = async () => {
-    const result = await breakupPairing();
+    const confirmBreakup = window.confirm("Do you confirm you want to break up?");
+    if (confirmBreakup) {
+      const userInput = prompt("Please enter 'break up' to confirm:");
+      if (userInput === "break up") {
+        const result = await breakupPairing();
 
-    if (result.success) {
-      setPairStatus("unpaired");
-      setPartnerEmail("");
-      onStatusChange();
-    } else {
-      alert("Failed to breakup. Please try again.");
+        if (result.success) {
+          setPairStatus("unpaired");
+          setPartnerEmail("");
+          onStatusChange();
+        } else {
+          alert("Failed to breakup. Please try again.");
+        }
+      } else {
+        alert("Breakup not confirmed. Please enter the exact text to proceed.");
+      }
     }
   };
+  
   const handleLogout = async () => {
     await logout();
     onStatusChange();
@@ -131,7 +140,11 @@ export default function SettingsModal({
                 </div>
                 {pairStatus === "unpaired" && (
                   <>
-                    <p>Enter your partner&apos;s email to start pairing:</p>
+                    <p className="text-blue-600 text-sm">1. Ask your partner to install "Wake Them Up".</p>
+                    <p className="text-blue-600 text-sm">2. Ask them to sign up and share their email.</p>
+                    <p className="text-blue-600 text-sm">3. Paste their email below and click "Add Partner".</p>
+                    <p className="text-blue-600 text-sm">4. Once sent, click "Confirm Pairing" again.</p>
+                    <p className="text-blue-600 text-sm">5. It will show "paired" once confirmed.</p>
                     <Input
                       placeholder="Partner's email"
                       value={inputEmail}
@@ -144,7 +157,10 @@ export default function SettingsModal({
                 )}
                 {pairStatus === "waiting" && (
                   <>
-                    <p>`Waiting for ${partnerEmail} to confirm the pairing.`</p>
+                  <p className="text-blue-600 text-sm">1. Click "Confirm Pairing".</p>
+                  <p className="text-blue-600 text-sm">2. Ask your partner to click "Confirm Pairing".</p>
+                  <p className="text-blue-600 text-sm">3. It will show "paired" once confirmed both ways.</p>
+                    <p>Waiting for {partnerEmail} to confirm the pairing.</p>
                     <Button color="primary" onPress={handleConfirmPairing}>
                       Confirm Pairing
                     </Button>
