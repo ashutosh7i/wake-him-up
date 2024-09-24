@@ -140,11 +140,11 @@ export default function SettingsModal({
                 </div>
                 {pairStatus === "unpaired" && (
                   <>
-                    <p className="text-blue-600 text-sm">1. Ask your partner to install "Wake Them Up".</p>
+                    <p className="text-blue-600 text-sm">1. Ask your partner to install &quot;Wake Them Up&quot;.</p>
                     <p className="text-blue-600 text-sm">2. Ask them to sign up and share their email.</p>
-                    <p className="text-blue-600 text-sm">3. Paste their email below and click "Add Partner".</p>
-                    <p className="text-blue-600 text-sm">4. Once sent, click "Confirm Pairing" again.</p>
-                    <p className="text-blue-600 text-sm">5. It will show "paired" once confirmed.</p>
+                    <p className="text-blue-600 text-sm">3. Paste their email below and click &quot;Add Partner&quot;.</p>
+                    <p className="text-blue-600 text-sm">4. Once sent, click &quot;Confirm Pairing&quot; again.</p>
+                    <p className="text-blue-600 text-sm">5. It will show &quot;paired&quot; once confirmed.</p>
                     <Input
                       placeholder="Partner's email"
                       value={inputEmail}
@@ -157,9 +157,9 @@ export default function SettingsModal({
                 )}
                 {pairStatus === "waiting" && (
                   <>
-                  <p className="text-blue-600 text-sm">1. Click "Confirm Pairing".</p>
-                  <p className="text-blue-600 text-sm">2. Ask your partner to click "Confirm Pairing".</p>
-                  <p className="text-blue-600 text-sm">3. It will show "paired" once confirmed both ways.</p>
+                  <p className="text-blue-600 text-sm">1. Click &quot;Confirm Pairing&quot;.</p>
+                  <p className="text-blue-600 text-sm">2. Ask your partner to click &quot;Confirm Pairing&quot;.</p>
+                  <p className="text-blue-600 text-sm">3. It will show &quot;paired&quot; once confirmed both ways.</p>
                     <p>Waiting for {partnerEmail} to confirm the pairing.</p>
                     <Button color="primary" onPress={handleConfirmPairing}>
                       Confirm Pairing
