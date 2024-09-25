@@ -113,3 +113,6 @@ Made with 💖 by [Ashutosh7i](https://github.com/Ashutosh7i)
 ---
 
 Wake Him Up - Connecting couples, one wake-up call at a time! 😴
+
+## Demo video-
+![Alt text](output2.gif)
